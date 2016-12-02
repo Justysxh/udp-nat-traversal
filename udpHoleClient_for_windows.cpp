@@ -95,8 +95,10 @@ int udpHoleClient()
     selfIp.S_un.S_addr = *(int*)&buf[6];
     short port = *(short*)&buf[10];
 
+    char sIP[0x20] = {0};
+    strcpy_s(sIP, inet_ntoa(selfIp));
     printf("recv data: my( %s:%d) peer( %s:%d ) \n",
-           inet_ntoa(selfIp), ntohs(port),
+           sIP, ntohs(port),
            inet_ntoa(peerAddr.sin_addr), ntohs(peerAddr.sin_port));
 
     if(peerAddr.sin_addr.S_un.S_addr == selfIp.S_un.S_addr)
