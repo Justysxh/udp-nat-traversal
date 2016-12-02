@@ -5,14 +5,14 @@ udp-nat-traversal  用UDP实现的NAT穿越,即P2P穿透通信 理论上来说, 
 ### NAT分类
 
 #### **Full Cone NAT**:  
-&ensp;&ensp;&ensp;&ensp;内网主机建立一个UDP socket(LocalIP:LocalPort) 第一次使用这个socket给外部主机发送数据时NAT会给其分配一个公网(PublicIP,PublicPort),以后用这个socket向外面==任何主机==发送数据都将使用这对(PublicIP,PublicPort)。此外，==任何外部主机==只要知道这个(PublicIP,PublicPort)就可以发送数据给(PublicIP,PublicPort)，内网的主机就能收到这个数据包 
+&ensp;&ensp;&ensp;&ensp;内网主机建立一个UDP socket(LocalIP:LocalPort) 第一次使用这个socket给外部主机发送数据时NAT会给其分配一个公网(PublicIP,PublicPort),以后用这个socket向外面**任何主机**发送数据都将使用这对(PublicIP,PublicPort)。此外**任何外部主机**只要知道这个(PublicIP,PublicPort)就可以发送数据给(PublicIP,PublicPort)，内网的主机就能收到这个数据包 
    
 #### **Restricted Cone NAT**: 
-&ensp;&ensp;&ensp;&ensp;内网主机建立一个UDP socket(LocalIP,LocalPort) 第一次使用这个socket给外部主机发送数据时NAT会给其分配一个公网(PublicIP,PublicPort),以后用这个socket向外面==任何主机==发送数据都将使用这对(PublicIP,PublicPort)。此外，如果任何外部主机想要发送数据给这个内网主机，只要知道这个(PublicIP,PublicPort)并且内网主机之前用这个==socket曾向这个外部主机IP发送过数据==。只要满足这两个条件，这个外部主机就可以用自己的(==IP,任何端口==)发送数据给(PublicIP,PublicPort)，内网的主机就能收到这个数据包 
+&ensp;&ensp;&ensp;&ensp;内网主机建立一个UDP socket(LocalIP,LocalPort) 第一次使用这个socket给外部主机发送数据时NAT会给其分配一个公网(PublicIP,PublicPort),以后用这个socket向外面**任何主机**发送数据都将使用这对(PublicIP,PublicPort)。此外，如果任何外部主机想要发送数据给这个内网主机，只要知道这个(PublicIP,PublicPort)并且内网主机之前用这个**socket曾向这个外部主机IP发送过数据**。只要满足这两个条件，这个外部主机就可以用自己的(**IP,任何端口**)发送数据给(PublicIP,PublicPort)，内网的主机就能收到这个数据包 
    
 #### **Port Restricted Cone NAT**:
 
-&ensp;&ensp;&ensp;&ensp;内网主机建立一个UDP socket(LocalIP,LocalPort) 第一次使用这个socket给外部主机发送数据时NAT会给其分配一个公网(PublicIP,PublicPort),以后用这个socket向外面==任何主机==发送数据都将使用这对(PublicIP,PublicPort)。此外，如果任何外部主机想要发送数据给这个内网主机，只要知道这个(PublicIP,PublicPort)并且内网主机之前用这个==socket曾向这个外部主机(IP,Port)发送过数据==。只要满足这两个条件，这个外部主机就可以用自己的(==IP,Port==)发送数据给(PublicIP,PublicPort)，内网的主机就能收到这个数据包 
+&ensp;&ensp;&ensp;&ensp;内网主机建立一个UDP socket(LocalIP,LocalPort) 第一次使用这个socket给外部主机发送数据时NAT会给其分配一个公网(PublicIP,PublicPort),以后用这个socket向外面**任何主机**发送数据都将使用这对(PublicIP,PublicPort)。此外，如果任何外部主机想要发送数据给这个内网主机，只要知道这个(PublicIP,PublicPort)并且内网主机之前用这个**socket曾向这个外部主机(IP,Port)发送过数据**。只要满足这两个条件，这个外部主机就可以用自己的(**IP,Port**)发送数据给(PublicIP,PublicPort)，内网的主机就能收到这个数据包 
     
     
 #### **Symmetric NAT**: 
