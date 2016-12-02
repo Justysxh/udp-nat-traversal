@@ -235,6 +235,7 @@ int udpHoleClient()
 
 那是因为当第一次发送时, 如果双方都不是Full Cone NAT, 那么必然数据包都到不了对方, 这时如果就结束了打洞流程, 那么打洞就失败了. 因为有recvfrom的超时时间, 这样可以保证双方都已经向对方的IP和端口发送了数据,也就是在NAT上建立了端口映射了. 这时再次发送数据就能到达对方了.
 
+![image](https://github.com/Justysxh/udp-nat-traversal/blob/master/ok.png)
 
 ## 致谢
 
