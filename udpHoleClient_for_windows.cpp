@@ -1,11 +1,6 @@
 /**
- * hole-punch - A simple UDP-based NAT hole punching example for C
- * (c) Chris Kennelly <chris@ckennelly.com>
- *
- * Use, modification, and distribution are subject to the Boost Software
- * License, Version 1.0.  (See accompanying file COPYING or a copy at
- * <http://www.boost.org/LICENSE_1_0.txt>.)
- */
+by xiaohuh421@qq.com  
+//*/
 
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE
@@ -38,11 +33,7 @@ public:
     }
 };
 
-/**
- * This client connects to the address and port of the server. It proceeds to
- * ping-pong data with another instance of itself once a second client connects
- * to the relay server.
- */
+
 int udpHoleClient()
 {
     CAutoSockInit autoinit;

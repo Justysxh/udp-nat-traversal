@@ -1,3 +1,8 @@
+/**
+by xiaohuh421@qq.com  
+//*/
+
+
 #include <assert.h>
 #include <errno.h>
 #include <stdint.h>
@@ -17,11 +22,6 @@
 #define SOCKADDR sockaddr
 #define SOCKET int
 #define INVALID_SOCKET (-1)
-/**
- *  * This client connects to the address and port of the server. It proceeds to
- *   * ping-pong data with another instance of itself once a second client connects
- *    * to the relay server.
- *     */
 
 int udpHoleClient();
 
