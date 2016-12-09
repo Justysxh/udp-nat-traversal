@@ -62,7 +62,7 @@ int udpHoleClient()
     servAddr.sin_family = AF_INET;
     servAddr.sin_addr.s_addr = inet_addr("123.147.223.124");
     //servAddr.sin_addr.S_un.S_addr = inet_addr("192.168.1.20");
-    char buf[0x20] = {0};
+    char buf[0x40] = {0};
 
     ret = sendto(sock, buf, 0x10, 0, (SOCKADDR*)&servAddr, sizeof(SOCKADDR_IN));
 
@@ -84,32 +84,33 @@ int udpHoleClient()
     peerAddr.sin_addr.s_addr = *(int*)buf;
    // peerAddr.sin_addr.s_addr = 0x7B93DF7B;
     peerAddr.sin_port = *(short*)&buf[4];
-    
-    struct in_addr selfIp={0};
-    selfIp.s_addr = *(int*)&buf[6];
+    struct in_addr selfip={0};
+    selfip.s_addr = *(int*)&buf[6];
     short selfPort = *(short*)&buf[10];
-    if(peerAddr.sin_addr.s_addr == selfIp.s_addr)
+    selfPort = ntohs(selfPort);
+    char strIp[0x10]={0};
+    strcpy(strIp,inet_ntoa(selfip));
+    printf("recv data: myself(%s:%d)  peer( %s:%d)  \n",
+           strIp, selfPort,
+           inet_ntoa(peerAddr.sin_addr), ntohs(peerAddr.sin_port));
+    if(peerAddr.sin_addr.s_addr == selfip.s_addr)
     {
-        printf("no need NAT hole, you and peer in the back of the same NAT\n");
+        printf(" back of  the same NAT, no need NAT hole\n");
         close(sock);
         return 0;
     }
-
-    printf("recv data: My( %s:%d ) peer( %s:%d ) \n",
-	 inet_ntoa(selfIp), ntohs(selfPort),
-	 inet_ntoa(peerAddr.sin_addr), ntohs(peerAddr.sin_port));
     struct timeval timeout = {0,300000};//300ms
     setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, (char *)&timeout, sizeof(struct timeval));
-    char msg[0x20] = "0123456";
+    char msg[0x40] = "0123456";
     struct passwd *pwd = getpwuid(getuid());
-    sprintf(msg,"%d:[%s] hello",getpid(),pwd->pw_name);
+    sprintf(msg,"p2p->%d:[%s]say hello",getpid(),pwd->pw_name);
     printf("send msg to peer: %s \n",msg);
     printf("wait peer back...\n");
     for(int i = 0; i < 5 ; ++i)
     {
         ret = sendto(sock, msg, strlen(msg) + 1, 0, (SOCKADDR*)&peerAddr, sizeof(SOCKADDR_IN));
         addrLen = sizeof(SOCKADDR_IN);
-	ret = recvfrom(sock,buf,0x20,0,(SOCKADDR*)&recvAddr, &addrLen);
+	ret = recvfrom(sock,buf,0x40,0,(SOCKADDR*)&recvAddr, &addrLen);
 	if(ret >=0)
 	{
 	    break;
@@ -117,7 +118,7 @@ int udpHoleClient()
     }
     if(ret<1)
     {
-	printf("udp hole  failed!! errno:%d",errno);
+	printf("udp hole  failed!! errno:%d\n",errno);
         close(sock);
         return 0;
     }
@@ -125,6 +126,8 @@ int udpHoleClient()
     printf("data: %s\n", buf);
     ret = sendto(sock, msg, strlen(msg) + 1, 0, (SOCKADDR*)&recvAddr, sizeof(SOCKADDR_IN));
     sleep(2);
+    //buf[0] = 'F';
+    //sendto(sock, buf, strlen(buf) + 1, 0, (SOCKADDR*)&recvAddr, sizeof(SOCKADDR_IN));
     close(sock);
     return 0;
 
