@@ -1,6 +1,5 @@
 # udp-nat-traversal UDP实现的NAT穿越
-udp-nat-traversal  用UDP实现的NAT穿越,即P2P穿透通信 理论上来说, 只要被穿越的NAT不都是Symmetric NAT类型, 那么就是可穿越的
-
+udp-nat-traversal  用UDP实现的NAT穿越,即P2P穿透通信 理论上来说, 只要不是Port Restricted Cone NAT与Symmetric NAT , Symmetric NAT与Symmetric NAT.  这两种类型组合之间打洞, 都应该是可打通的. 具体原因请看原理.
 ## 原理
 ### NAT分类
 
