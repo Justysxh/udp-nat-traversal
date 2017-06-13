@@ -1,5 +1,6 @@
 # udp-nat-traversal UDP实现的NAT穿越
 udp-nat-traversal  用UDP实现的NAT穿越,即P2P穿透通信 理论上来说, 只要不是Port Restricted Cone NAT与Symmetric NAT , Symmetric NAT与Symmetric NAT.  这两种类型组合之间打洞, 都应该是可打通的. 具体原因请看原理.
+(注: 以下均未考虑一机多IP的情况, 一般的移动设备或者电脑默认都同时只会有一张网卡工作,仅有一个IP)
 ## 原理
 ### NAT分类
 
@@ -36,11 +37,13 @@ udp-nat-traversal  用UDP实现的NAT穿越,即P2P穿透通信 理论上来说, 
 
 ### 到这里就结束了吗?
 
-&ensp;&ensp;&ensp;&ensp;显然不能, 其实还有一种情况未解决, 那就是,如果两个客户端,其中一个在Symmetric NAT后, 另一个在Cone NAT后. 其实它们也是可以打通,实现P2P的.
+&ensp;&ensp;&ensp;&ensp;显然不能, 其实还有一种情况未解决, 那就是,如果两个客户端,其中一个在Symmetric NAT后, 另一个在Cone NAT (F/R类型)后. 其实它们也是可以打通,实现P2P的.
 
-比如客户端A在Symmetric NAT后, B在Cone NAT后.
+比如客户端A在Symmetric NAT后, B在Cone NAT (F/R类型)后.
 那么A到服务器与A到B的IP和端口都是不同的, 但B的外网IP和端口却是不变的. 这时B连接A肯定是不能通的, 但是A连接B却是可以的.
 这时, 通过UDP通信中的recvfrom中的地址结构体, 就可以知道A的外网IP和端口了.  这时它们之间就可以实现P2P了.
+
+(注:  F类型指Full Cone NAT;  R类型指 Restricted Cone NAT)
 
 ## 代码实现
 
